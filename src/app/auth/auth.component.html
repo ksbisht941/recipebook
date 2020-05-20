@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" class="form-control" id="email" ngModel name="email" email placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+
+          <div class="input-group mb-1">
+            <input type="{{hidePassword?'text':'password'}}" ngModel name="password" password class="form-control input100" id="password"
+              placeholder="Password" />
+              <span (click)="showPassword()" type="checkbox" class="fa fa-fw field-icon" [ngClass]="{'fa-eye': !hidePassword, 'fa-eye-slash': hidePassword}"></span>
+          </div>
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-success mr-2">{{ isLoginMode ? 'Sign In' : 'Sign Up' }}</button>
+        <button type="button" class="btn btn-outline-success"
+          (click)="switchMode()">{{ isLoginMode ? 'Switch To Sign Up' : 'Switch To Sign In' }}</button>
+      </form>
+    </div>
+  </div>
+</div>

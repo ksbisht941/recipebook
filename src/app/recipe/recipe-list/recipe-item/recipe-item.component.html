@@ -1,0 +1,23 @@
+<!-- <div class="list-group mt-2" (click)="onSelected()">
+  <a type="button" class="list-group-item list-group-item-action">
+    <div class="float-left" style="width: 80%;">
+      <h4>{{ recipe.name }}</h4>
+      <p>{{ recipe.description }}</p>
+    </div>
+    <div class="float-right" style="width: 20%;">
+      <img src="../../../assets/{{ recipe.imagePath }}.jpg" [alt]="recipe.name" class="img-fluid">
+    </div>
+  </a>
+</div> -->
+
+<ul class="list-group mt-2" [routerLink]="[index]">
+  <li type="button" class="list-group-item"  routerLinkActive="active" >
+    <div class="float-left" style="width: 80%;">
+      <h4>{{ recipe.name }}</h4>
+      <p>{{ recipe.description }}</p>
+    </div>
+    <div class="float-right" style="width: 20%;">
+      <img data-src="../../../assets/{{ recipe.imagePath }}.jpg" [alt]="recipe.name" class="img-fluid lazyload">
+    </div>
+  </li>
+</ul>

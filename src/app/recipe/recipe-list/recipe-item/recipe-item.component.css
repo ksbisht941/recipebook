@@ -1,0 +1,11 @@
+.list-group {
+    overflow-y: auto;
+}
+
+.list-group-item {
+    cursor: pointer;
+} 
+
+p {
+    margin-bottom: 0px;
+}
