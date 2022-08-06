@@ -1,30 +1,31 @@
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpParams } from '@angular/common/http';
+import { exhaustMap, map, Observable, take } from 'rxjs';
 import { AuthService } from './auth.service';
-import { take, exhaustMap } from 'rxjs/operators';
+import { User } from './user';
+import * as fromApp from './../store/app.reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
 
-  intercept(
-    req: import('@angular/common/http').HttpRequest<any>,
-    next: import('@angular/common/http').HttpHandler
-  ): import('rxjs').Observable<import('@angular/common/http').HttpEvent<any>> {
-    return this.authService.user.pipe(
+  constructor(
+    private authService: AuthService,
+    private store: Store<fromApp.AppState>
+  ) { }
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return this.store.select('auth').pipe(
       take(1),
-      exhaustMap((user) => {
-        if (!user) {
-          return next.handle(req);
-        }
-
-        const modifiedReq = req.clone({
-          params: new HttpParams().set('auth', user.token),
-        });
-        return next.handle(modifiedReq);
+      map(authState => authState.user), 
+      exhaustMap((user: User | null) => {
+      if (!user) return next.handle(req); 
+      const modifiedReq = req.clone({
+        params: new HttpParams().set('auth', user?.token ? user?.token : '' )
       })
-    );
+      return next.handle(modifiedReq);
+    }));
   }
 }

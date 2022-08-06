@@ -1,25 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { LoaderService } from './loader/loader.service';
+import { Store } from '@ngrx/store';
 import { AuthService } from './auth/auth.service';
+import { LoggingService } from './shared/logging/logging.service';
+import * as fromApp from './store/app.reducer';
+import * as AuthActions from './auth/store/auth.actions';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Angular';
-  public showPreloader: boolean = false;
 
-  onAddItem(form) {}
-
-  constructor(private loaderService: LoaderService, private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private loggingService: LoggingService,
+    private store: Store<fromApp.AppState>
+  ) {}
 
   ngOnInit(): void {
-    this.loaderService.getAlert().subscribe((showPreloader: boolean) => {
-      this.showPreloader = showPreloader;
-    });
-
-    this.authService.autoLogIn();
+    // this.authService.autoLogin();
+    this.store.dispatch(new AuthActions.AutoLogin());
+    // this.loggingService.printLog('Hello from app component');
   }
+
 }

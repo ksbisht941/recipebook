@@ -1,38 +1,31 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" [routerLink]="['/recipes']">Recipe Book</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']">Recipe Book</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" [routerLink]="['/recipe']" routerLinkActive="active" *ngIf="isAuthenticate">Recipes</a>
+        <a class="nav-link" [routerLink]="['/shopping-list']" routerLinkActive="active">Shopping List</a>
+        <a class="nav-link" [routerLink]="['/blog']" routerLinkActive="active">Blog</a>
+        <a class="nav-link" [routerLink]="['/auth']" routerLinkActive="active" *ngIf="!isAuthenticate">Authenticate</a>
+        <a class="nav-link" (click)="onLogout()" *ngIf="isAuthenticate">Logout</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/recipes']" *ngIf="isAuthenticated">Recipe</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/shopping-list']">Shopping List</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" [routerLink]="['/auth/signup']" *ngIf="!isAuthenticated">Authentication</a>
-      </li>
-    </ul>
-    <div class="d-inline my-2 my-lg-0">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" *ngIf="isAuthenticated" (click)="onSigningOff()">Log Out</a>
-        </li>
-        <li class="nav-item dropdown" routerLinkActive="active">
-          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
-            *ngIf="isAuthenticated" aria-haspopup="true" aria-expanded="false">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Manage
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" (click)="onSaveData()">Save Data</a>
-            <a class="dropdown-item" (click)="onFetchData()">Fetch Data</a>
-          </div>
-        </li>
-      </ul>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="onSaveData()">Save Data</a></li>
+            <li><a class="dropdown-item" (click)="onFetchData()">Fetch Data</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
+
+<!-- [attr.aria-current]="'active'" -->
+<!-- [attr.aria-current]="'active'" -->

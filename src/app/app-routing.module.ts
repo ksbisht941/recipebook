@@ -1,45 +1,38 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
-import { ErrorComponent } from './shared/error/error.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/recipes', pathMatch: 'full' },
+  { path: '', redirectTo: 'recipe', pathMatch: 'full' },
   {
-    path: 'recipes',
+    path: 'recipe',
     canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./recipe/recipe.module').then((m) => m.RecipeModule),
+    loadChildren: () => import('./recipes/recipes.module').then(m => m.RecipeModule)
   },
   {
     path: 'shopping-list',
-    loadChildren: () =>
-      import('./shopping-list/shopping-list.module').then(
-        (m) => m.ShoppingListModule
-      ),
+    loadChildren: () => import('./shopping-list/shopping-list.module').then(m => m.ShoppingListModule)
   },
   {
-    path: 'auth/:form',
-    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
-  },
-  // {
-  //   path: 'authentication/:form',
-  //   loadChildren: () => import('./sign-login/sign-login.module').then((m) => m.SignLoginModule),
-  // },
-  {
-    path: 'page-not-found',
-    component: ErrorComponent,
+    path: 'blog',
+    loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule)
   },
   {
-    path: '**',
-    redirectTo: '/page-not-found',
-    pathMatch: 'full',
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
-
+  { path: '**', redirectTo: 'recipe' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes, {
+    preloadingStrategy: PreloadAllModules,
+    // initialNavigation: 'enabledBlocking',
+    scrollPositionRestoration: "enabled",
+    onSameUrlNavigation: "reload"
+  })],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

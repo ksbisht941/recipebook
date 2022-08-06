@@ -1,34 +1,47 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Ingredient } from '../shared/ingredients.model';
-import { ShoppingListService } from './shopping-list.service';
-import { Subscribable, Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscriber, Subscription } from 'rxjs';
+import { LoggingService } from '../shared/logging/logging.service';
+import { Ingredient } from './ingredient';
+import { ShoppingListService } from './services/shopping-list.service';
+import * as fromApp from './../store/app.reducer';
+import * as ShoppingListActions from './store/shopping-list.actions';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.css'],
+  styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  ingredients: Ingredient[];
-  private igChangedSub: Subscription;
 
-  constructor(private slService: ShoppingListService) {}
+  ingredients!: Observable<{ingredients: Ingredient[]}>;
+  private ingChangeSub!: Subscription;
 
-  ngOnInit(): void {
-    this.ingredients = this.slService.getIngredients();
-    this.igChangedSub = this.slService.ingredientsChanged.subscribe(
-      (ingredients: Ingredient[]) => {
-        this.ingredients = ingredients;
-      }
-    );
+  constructor(
+    private slService: ShoppingListService,
+    private store: Store<fromApp.AppState>,
+    private loggingService: LoggingService,
+  ) {
   }
   
-  onEditItem(index: number) {
-    this.slService.startEditing.next(index);
+  ngOnInit(): void {
+    this.ingredients = this.store.select('shoppingList');
+    // this.ingredients = this.slService.getIngredients();
+    // this.ingChangeSub = this.slService.ingChanged.subscribe((ings: Ingredient[]) => this.ingredients = ings);
+
+    // this.loggingService.printLog('Hello from shopping list')
   }
 
   ngOnDestroy(): void {
-    this.igChangedSub.unsubscribe;
+    // if (this.ingChangeSub instanceof Subscriber) this.ingChangeSub.unsubscribe();
   }
 
+  ingredientTrackBy(idx: number) {
+    return idx;
+  }
+
+  onEditIngredient(idx: number) {
+    this.store.dispatch(new ShoppingListActions.StartEdit(idx));
+    // this.slService.startedEditing.next(idx);
+  }
 }

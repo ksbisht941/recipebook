@@ -1,10 +1,11 @@
-<div [ngClass]="{'show':!showPreloader,'hide':showPreloader}">
-  <app-header></app-header>
-  <div class="container mt-4">
-    <router-outlet></router-outlet>
+<header></header>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
 
-<div class="preloader" [ngClass]="{'show':showPreloader,'hide':!showPreloader}">
-  <app-loader></app-loader>
-</div>
+<br>

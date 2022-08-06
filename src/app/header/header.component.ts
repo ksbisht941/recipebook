@@ -1,51 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { DataStorageService } from '../shared/data-storage.service';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { map, Subscriber, Subscription, tap } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
-import { LoaderService } from '../loader/loader.service';
-import { ToastrService } from 'ngx-toastr';
+import { DataStorageService } from '../shared/data-storage/data-storage.service';
+import * as fromApp from './../store/app.reducer';
+import * as AuthActions from './../auth/store/auth.actions';
 
 @Component({
-  selector: 'app-header',
+  selector: 'header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-  private userSub: Subscription;
-  isAuthenticated: boolean;
+export class HeaderComponent implements OnInit, OnDestroy {
+  private userSub!: Subscription;
+  isAuthenticate: boolean = false;
 
   constructor(
     private dataStorageService: DataStorageService,
     private authService: AuthService,
-    private loaderService: LoaderService,
-    private toastr: ToastrService
-  ) {
-    this.userSub = this.authService.user.subscribe((user) => {
-      this.isAuthenticated = !!user;
+    private router: Router,
+    private store: Store<fromApp.AppState>
+  ) { }
+
+  ngOnInit(): void {
+    this.userSub = this.store.select('auth').pipe(
+      map(authState => authState.user)
+    ).subscribe((user) => {
+        this.isAuthenticate = !!user;
     });
   }
 
-  ngOnInit(): void {}
-
+  ngOnDestroy(): void {
+      if (this.userSub instanceof Subscriber) this.userSub.unsubscribe();
+  }
+  
   onSaveData() {
     this.dataStorageService.storeRecipes();
   }
-
+  
   onFetchData() {
     this.dataStorageService.fetchRecipes().subscribe();
-  }
+  } 
 
-  onSigningOff() {
-    this.loaderService.showPreloader(true);
-    this.authService.signingOff();
-    this.popOnAction();
-    this.toastr.success("You're Logged Out")
-  }
-
-  popOnAction() {
-    let audio = new Audio();
-    audio.src = '../../../assets/pop.mp3';
-    audio.load();
-    audio.play();
+  onLogout() {
+    // this.authService.logout();
+    this.store.dispatch(new AuthActions.Logout())
   }
 }
