@@ -6,7 +6,7 @@ import { map, Subscriber, Subscription } from 'rxjs';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
 import { PlaceholderDirective } from 'src/app/shared/placeholder/placeholder.directive';
 import { Recipe } from '../recipes';
-import { RecipesService } from '../recipes.service';
+// import { RecipesService } from '../recipes.service';
 import * as fromApp from './../../store/app.reducer';
 
 @Component({
@@ -24,12 +24,12 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   recipeChangedSub!: Subscription;
 
   constructor(
-    private recipesService: RecipesService,
+    // private recipesService: RecipesService,
     private router: Router,
     private store: Store<fromApp.AppState>,
     private componentFactoryResolver: ComponentFactoryResolver
   ) { 
-    this.recipes = this.recipesService.getRecipes();
+    // this.recipes = this.recipesService.getRecipes();
 
     this.recipeChangedSub = this.store.select('recipes').pipe(
       map(recipeState => recipeState.recipes)

@@ -19,35 +19,35 @@ export class RecipesService {
     private store: Store<fromApp.AppState>
   ) { }
 
-  setRecipes(recipes: Recipe[]) {
-    this.recipes = recipes;
-    this.recipeChanged.next(this.recipes.slice());
-  }
+  // setRecipes(recipes: Recipe[]) {
+  //   this.recipes = recipes;
+  //   this.recipeChanged.next(this.recipes.slice());
+  // }
 
-  getRecipes(): Recipe[] {
-    return this.recipes.slice();
-  }
+  // getRecipes(): Recipe[] {
+  //   return this.recipes.slice();
+  // }
 
-  getRecipe(idx: number): Recipe {
-    return this.recipes[idx];
-  }
+  // getRecipe(idx: number): Recipe {
+  //   return this.recipes[idx];
+  // }
 
-  addIngredientToShoppingList(ingredients: Ingredient[]) {
-    this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
-    // this.slService.addIngredients(ingredients);
-  }
+  // addIngredientToShoppingList(ingredients: Ingredient[]) {
+  //   this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
+  //   // this.slService.addIngredients(ingredients);
+  // }
 
-  updateRecipe(idx: number, recipe: Recipe) {
-    this.recipes[idx] = recipe;
-  }
+  // updateRecipe(idx: number, recipe: Recipe) {
+  //   this.recipes[idx] = recipe;
+  // }
 
-  addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
-    this.recipeChanged.next(this.recipes.slice())
-  }
+  // addRecipe(recipe: Recipe) {
+  //   this.recipes.push(recipe);
+  //   this.recipeChanged.next(this.recipes.slice())
+  // }
 
-  deleteRecipe(idx: number) {
-    this.recipes.splice(idx, 1);
-    this.recipeChanged.next(this.recipes.slice());
-  }
+  // deleteRecipe(idx: number) {
+  //   this.recipes.splice(idx, 1);
+  //   this.recipeChanged.next(this.recipes.slice());
+  // }
 }
