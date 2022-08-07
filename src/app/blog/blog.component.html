@@ -1,6 +1,29 @@
-<a *ngFor="let blog of blogs" [routerLink]="['/blog', blog.title]">
-    <h1>{{ blog.title }}</h1>
-    <p>{{ blog.content }}</p>
+<div @blogsAnimation>
 
-    <br>
-</a>
+    <h1>Blogs</h1>
+
+  <input type="text" class="form-control" (keyup.enter)="onAddBlogs($event)">
+
+  <br>
+
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let blog of blogs; let idx = index;" (click)="onDeleteBlog(idx)" @blogAnimation
+      (@blogAnimation.start)="animationStarted($event)" (@blogAnimation.done)="animationDone($event)">
+      {{blog.title}}
+    </li>
+  </ul>
+
+  <br>
+
+  <h5>FAQs</h5>
+
+  <div class="card">
+      <div class="card-header" (click)="onToggleFaq()" style="cursor: pointer;">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, deleniti?
+      </div>
+      <div class="card-body" [@expandCollapse]="isExpanded ? 'expanded' : 'collapsed'">
+          <!-- <ng-content></ng-content> -->
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, distinctio.
+      </div>
+  </div>
+</div>
